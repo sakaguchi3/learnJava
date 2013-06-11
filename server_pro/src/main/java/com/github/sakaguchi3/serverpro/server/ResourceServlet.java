@@ -95,6 +95,11 @@ public class ResourceServlet extends HttpServlet {
 
 	}
 
+	/**
+	 * 
+	 * @param req
+	 * @return Tuple[HttpResponseCode, json]
+	 */
 	protected Tuple2<Integer, String> response(HttpServletRequest req) {
 		var isOk = Optional.ofNullable(req.getParameter("apikey")) //
 				.filter("secret"::equals) //
