@@ -98,6 +98,10 @@ public class TokenServlet extends HttpServlet {
 		var b2 = Optional.ofNullable(req.getParameter("grant_type")) //
 				.filter(s -> s.equals("client_credentials")) //
 				.isPresent();
+		// basic
+		var userPrincipal = req.getUserPrincipal();
+		var remoteUser = req.getRemoteUser();
+		var authTye = req.getAuthType();
 
 		// request fail ----
 
