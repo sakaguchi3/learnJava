@@ -31,7 +31,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>restResource</servlet-name>
-		<url-pattern>/api/resource</url-pattern>
+		<url-pattern>/api/v1/resource</url-pattern>
 	</servlet-mapping>
 
 	<!-- -->
@@ -41,7 +41,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>token</servlet-name>
-		<url-pattern>/token</url-pattern>
+		<url-pattern>/api/v1/token/*</url-pattern>
 	</servlet-mapping>
 
 
