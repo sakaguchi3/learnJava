@@ -26,18 +26,29 @@ import org.junit.jupiter.api.Test;
 public class CollectionTest {
 
 	@Test
-	public void immutableTest() {
+	public void mutableTest() {
+		var l = Lists.mutable.of("a", "x");
+
+		assertTrue(l.contains("x"));
+		assertFalse(l.contains("c"));
+		assertEquals(2, l.size());
+
+		d();
+	}
+
+//	@Test
+	public void immutableMyTest() {
 		var l = Factories.immutable.of(1, 3, 3, 4);
 
 		l.get(3);
 		assertEquals(4, l.get(3));
-		
+
 		assertEquals(4, l.size());
 
 	}
 
 //	@Test
-	public void mutableTest() {
+	public void mutableMyTest() {
 		var l = Factories.mutable.of(1, 3, 3, 4);
 
 		l.get(3);
