@@ -12,41 +12,37 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 package com.github.sakaguchi3.jbatch002.apache.lang4;
 
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
-import org.apache.commons.collections4.list.TreeList;
+import org.apache.commons.collections4.ListUtils;
 import org.junit.jupiter.api.Test;
 
-public class TreeListTest {
+public class ListUtilTest {
 
 	@Test
-	public void unmodifiableTest() {
-		TreeList<Integer> t = new TreeList<>(List.of(8, 12, 20));
-		var ut = Collections.unmodifiableCollection(t);
-		assertThrows(UnsupportedOperationException.class, () -> {
-			ut.add(3);
-		});
+	public void lazyListTest() {
+		var r = ThreadLocalRandom.current();
+		List<Integer> lazy = ListUtils.lazyList(new ArrayList<Integer>(), () -> r.nextInt(300));
 
-		d();
-	}
+		assertEquals(0, lazy.size());
 
-//	@Test
-	public void treeTest() {
-		TreeList<Integer> t = new TreeList<>(List.of(8, 12, 20));
+		var i0 = lazy.get(0);
+		assertEquals(1, lazy.size());
 
-		var ut = Collections.unmodifiableCollection(t);
+		var i0_2 = lazy.get(0);
+		assertEquals(1, lazy.size());
+		assertEquals(i0, i0_2);
 
-		// ut is changed
-		t.add(3, 11);
+		var i1 = lazy.get(1);
+		assertEquals(2, lazy.size());
 
-		assertIterableEquals(List.of(8, 12, 20, 11), ut);
 		d();
 	}
 
