@@ -15,30 +15,10 @@
  */
 package com.github.sakaguchi3.jbatch002.concurrent.workerpattern;
 
-/**
- * create request
- */
-public class Client {
-	final Channel channel;
+public class RequestImpl implements Request {
 
-	public Client(Channel channel) {
-		this.channel = channel;
-	}
-
-	public void run() {
-		try {
-			localExec();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	void localExec() throws Exception {
-		for (int i = 0; i < 10; i++) {
-			var r = new RequestImpl();
-			channel.put(r);
-		}
+	@Override
+	public void execute() {
 	}
 
 }

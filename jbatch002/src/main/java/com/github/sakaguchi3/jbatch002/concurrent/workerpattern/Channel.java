@@ -15,29 +15,40 @@
  */
 package com.github.sakaguchi3.jbatch002.concurrent.workerpattern;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Channel {
 
 	private final BlockingQueue<Request> reqs = new LinkedBlockingQueue<>();
-	private final BlockingQueue<Worker> workers = new LinkedBlockingQueue<>();
+	private final List<Worker> workers;
 	private final ExecutorService es = Executors.newCachedThreadPool();
 
+	public Channel() {
+		this.workers = IntStream.range(0, 5) //
+				.mapToObj(__ -> new Worker(this)) //
+				.collect(Collectors.toUnmodifiableList());
+	}
+
+	public Channel(int threadSize) {
+		this.workers = IntStream.range(0, threadSize) //
+				.mapToObj(__ -> new Worker(this)) //
+				.collect(Collectors.toUnmodifiableList());
+	}
+
 	public void start() {
-		for (var v : workers) {
-			es.submit(v);
-		}
+		workers.forEach(w -> es.submit(w));
 	}
 
 	public void shutdown() {
-		workers.forEach(v -> {
-			v.shutdown();
-		});
+		workers.forEach(w -> w.shutdown());
 		shutdown(es, 10);
 	}
 

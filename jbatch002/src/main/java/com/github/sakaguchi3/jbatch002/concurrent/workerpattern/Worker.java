@@ -17,7 +17,7 @@ package com.github.sakaguchi3.jbatch002.concurrent.workerpattern;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-class Worker implements Runnable {
+public class Worker implements Runnable {
 
 	final Channel channel;
 	final AtomicBoolean isRun = new AtomicBoolean(true);

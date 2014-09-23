@@ -15,11 +15,9 @@
  */
 package com.github.sakaguchi3.jbatch002.concurrent.workerpattern;
 
-class Request {
-	
-	public void execute() {
-		// heavy task
-		
-	}
+public interface Request {
+
+	/** heavy task*/
+	void execute();
 
 }
