@@ -1,7 +1,9 @@
 package com.github.sakaguchi3.jbatch002.javaapi;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 public class CollectionMapTest {
 
-	@Test
+//	@Test
 	public void map1Test() {
 		var map = new HashMap<String, List<Number>>();
 
@@ -24,15 +26,43 @@ public class CollectionMapTest {
 		assertTrue((map.get(key) instanceof LinkedList));
 		assertFalse((map.get(key) instanceof ArrayList));
 
-		debug();
+		d();
 	}
 
 	@Test
-	public void bTest() {
-		debug();
+	public void computeIfAbsentLazyCheckTest() {
+
+		var map = new HashMap<String, Integer>();
+		var key = "a";
+		map.put(key, 30);
+
+		var val = map.computeIfAbsent(key, __ -> {
+			fail();
+			return 10;
+		});
+
+		assertEquals(30, val);
+		assertTrue(map.containsKey(key));
+
+		d();
+
 	}
 
-	void debug() {
+//	@Test
+	public void computeIfAbsentTest() {
+		var map = new HashMap<String, Integer>();
+		var key = "a";
+
+		var val = map.computeIfAbsent(key, __ -> 10);
+
+		assertEquals(10, val); 
+		assertTrue(map.containsKey(key));
+		assertEquals(10, map.get(key));
+
+		d();
+	}
+
+	private void d() {
 	}
 
 }
