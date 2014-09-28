@@ -19,10 +19,16 @@ public class CollectionSeqTest {
 		// List(1, 2)
 		var lst2 = lst1.append(2);
 
+
 		assertIterableEquals(List.of(1, 2), lst2);
+		
+		// immutable
+		assertIterableEquals(List.of(1), lst1);
+
+		d();
 	}
 
-	@Test
+//	@Test
 	void foldSumTest() {
 		var l1 = Array.of(1, 2, 3);
 
@@ -32,10 +38,10 @@ public class CollectionSeqTest {
 		assertEquals(6, sutfl);
 		assertEquals(6, sutfr);
 
-		debug();
+		d();
 	}
 
-	@Test
+//	@Test
 	void foldLstTest() {
 		var l1 = Array.of(1, 2, 3);
 
@@ -46,20 +52,20 @@ public class CollectionSeqTest {
 
 		assertIterableEquals(List.of(1, 2, 3), sutfl);
 		assertIterableEquals(List.of(3, 2, 1), sutfr);
-		debug();
+		d();
 	}
 
-	@Test
+//	@Test
 	public void vavrStreamToLstTest() {
 		var l = List.of(3, 9, 10, 15).toStream() //
 				.map(v -> v + 100) //
 				.toList();
 		var ans = List.of(103, 109, 110, 115);
 		assertIterableEquals(ans, l);
-		debug();
+		d();
 	}
 
-	@Test
+//	@Test
 	public void convJavatoVavrLstTest() {
 
 		// java list
@@ -69,11 +75,10 @@ public class CollectionSeqTest {
 		// vavr list
 		List<Integer> vavrList01 = List.ofAll(javaList01);
 		List<Integer> vavrList02 = List.ofAll(javaList02);
-		debug();
+		d();
 	}
 
-	void debug() {
-
+	private void d() {
 	}
 
 }
