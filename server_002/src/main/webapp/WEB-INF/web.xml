@@ -34,4 +34,16 @@
 		<url-pattern>/s003</url-pattern>
 	</servlet-mapping>
 
+	<!-- singleThread -->
+	<servlet>
+		<servlet-name>singlethread</servlet-name>
+		<servlet-class>com.github.sakaguchi3.server002.server.SingleThreadServer</servlet-class> 
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>singlethread</servlet-name>
+		<url-pattern>/singlethread</url-pattern>
+	</servlet-mapping>
+
+
+
 </web-app>
