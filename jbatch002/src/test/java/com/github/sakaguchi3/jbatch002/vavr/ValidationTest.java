@@ -6,11 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 
 import io.vavr.Tuple3;
@@ -21,7 +20,18 @@ import testcase.ValidationFuga;
 
 public class ValidationTest {
 
-	private static final Logger LOG = LogManager.getLogger();
+	@Test
+	public void validToListTest() {
+		var valid = new ValidationFuga();
+
+		Validation<Seq<String>, Tuple3<String, Integer, Double>> valSeq = valid.validate("a", 3, 9d);
+
+		// Seq to List
+		Validation<List<String>, Tuple3<String, Integer, Double>> valJavaLst = valSeq.mapError(v -> v.toJavaList());
+
+		assertTrue(valJavaLst.isValid());
+		debug();
+	}
 
 	@Test
 	public void validFugaTest() {
