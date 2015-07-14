@@ -13,7 +13,6 @@ import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 
 import io.vavr.Function2;
-import io.vavr.control.Try;
 
 public class Future_CompletableFutureTest {
 
