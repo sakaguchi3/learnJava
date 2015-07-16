@@ -1,3 +1,18 @@
+/**
+ * Copyright 2020 sakaguchi<uqw@outlook.jp>, https://github.com/sakaguchi3/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.github.sakaguchi3.server002.config;
 
 import java.io.IOException;
@@ -15,7 +30,7 @@ import org.apache.logging.log4j.Logger;
  *
  * @author sakaguchi
  */
-public class S002Config {
+public class Config {
 
 	// ---------------------------------------------------------
 	// field
@@ -24,7 +39,7 @@ public class S002Config {
 	/**
 	 * The instance of Configuration that this Class is storing
 	 */
-	private static S002Config configure = null;
+	private static Config configure = null;
 
 	/**
 	 * CONFIG_FILENAME is the file location of the configuration properties file
@@ -52,24 +67,16 @@ public class S002Config {
 	 * @return Config the stored Instance of this class
 	 * @throws IOException
 	 */
-	public static synchronized S002Config getInstance() {
-
+	public static synchronized Optional<Config> getInstance() {
 		if (configure == null) {
-
 			try {
-
-				configure = new S002Config(CONFIG_FILENAME);
-
+				configure = new Config(CONFIG_FILENAME);
 			} catch (Exception e) {
-
 				System.out.println("Config error :" + e.getMessage());
 				LOG.error("Config error :" + e.getMessage(), e);
-
-				System.exit(0);
 			}
 		}
-
-		return configure;
+		return Optional.ofNullable(configure);
 	}
 
 	/**
@@ -79,12 +86,12 @@ public class S002Config {
 	 * 
 	 * @throws IOException
 	 */
-	private S002Config(String configFileName) throws IOException {
+	private Config(String configFileName) throws IOException {
 		loadConf(configFileName);
 	}
 
 	// ---------------------------------------------------------
-	// method
+	// private method
 	// ---------------------------------------------------------
 
 	/**
@@ -97,9 +104,7 @@ public class S002Config {
 	void loadConf(String configFileName) throws IOException {
 
 		// config file
-		URL configFile = S002Config.class.getClassLoader().getResource(configFileName);
-
-		String tmp;
+		URL configFile = Config.class.getClassLoader().getResource(configFileName);
 
 		// load config info from properties file and set info to Properties instance.
 		try (InputStream in = configFile.openStream();) {
@@ -116,9 +121,7 @@ public class S002Config {
 		// export properties info to log file
 		this.properties.keySet().stream() //
 				.map(p -> p.toString()) //
-				.forEach(key -> LOG.info(CONFIG_FILENAME + " - key=" + key + ", value=" + this.properties.getProperty(key))) //
-		;
-
+				.forEach(key -> LOG.info(CONFIG_FILENAME + " - key=" + key + ", value=" + properties.getProperty(key)));
 	}
 
 	/**
@@ -143,7 +146,7 @@ public class S002Config {
 	}
 
 	// ---------------------------------------------------------
-	// setter/getter
+	// public method
 	// ---------------------------------------------------------
 
 }
