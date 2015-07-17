@@ -1,0 +1,16 @@
+mail.smtp.user=
+mail.smtp.pass=
+mail.smtp.host=
+mail.smtp.port=587
+mail.smtp.from=
+mail.smtp.connectiontimeout=10000
+mail.smtp.timeout=10000
+# mail.smtp.writetimeout=0         # 
+mail.smtp.auth=true
+#mail.smtp.ssl.enable=true
+mail.smtp.starttls.enable=true
+# mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory   # ssl
+# mail.smtp.socketFactory.fallback=false                         # ssl
+# mail.smtp.socketFactory.port=    
+mail.debug=true
+
