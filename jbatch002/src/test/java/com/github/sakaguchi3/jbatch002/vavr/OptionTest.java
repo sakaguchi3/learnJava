@@ -1,6 +1,7 @@
 package com.github.sakaguchi3.jbatch002.vavr;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.function.Function;
@@ -11,7 +12,21 @@ import io.vavr.collection.Seq;
 import io.vavr.control.Option;
 
 public class OptionTest {
-	
+	@Test
+	void flatmapNullTest() {
+		var o = Option.of(1).flatMap(__ -> null);
+		assertNull(o);
+	}
+
+	@Test
+	void mapNullTest() {
+		// Some(null)
+		var op = Option.of(1).map(__ -> null);
+
+		var o = op.get();
+		assertNull(o);
+	}
+
 	@Test
 	void funcTest() {
 		var opNum1 = Option.of(1);

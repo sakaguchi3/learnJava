@@ -1,6 +1,7 @@
 package com.github.sakaguchi3.jbatch002.javaapi;
 
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -12,7 +13,16 @@ import org.junit.jupiter.api.Test;
 public class OptionalTest {
 
 	@Test
-	void nullTest() {
+	void flatmapNullTest() {
+		assertThrows(NullPointerException.class, () -> {
+			Optional.of(1).flatMap(__ -> null);
+		});
+
+		debug();
+	}
+
+	@Test
+	void mapNullTest() {
 		var op = Optional.of(1).map(__ -> null);
 		assertTrue(op.isEmpty());
 
