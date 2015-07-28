@@ -1,9 +1,11 @@
 package com.github.sakaguchi3.jbatch002.vavr;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.concurrent.TimeUnit;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -80,38 +82,42 @@ public class FunctionTest {
 
 	@Test
 	public void lazyTest() {
-		Supplier<Double> sup = () -> {
-			try {
-				Thread.sleep(300);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return 0.123;
-		};
+		Supplier<Double> sup = () -> 0.123;
 
 		Lazy<Double> lazy = Lazy.of(sup);
 
 		Double ans = 0.123;
 
-		boolean b1 = lazy.isEvaluated(); // false
-		assertEquals(b1, (false));
-		double d1 = lazy.get(); // 0.123 (random generated)
+		assertFalse(lazy.isEvaluated());
+		double d1 = lazy.get(); // 0.123 (evaluted)
 		assertEquals(d1, (ans));
 
-		boolean b2 = lazy.isEvaluated(); // = true
+		assertTrue(lazy.isEvaluated());
 		double d2 = lazy.get(); // 0.123 (memoized)
 		assertEquals(d2, (ans));
 
-		boolean b3 = lazy.isEvaluated(); // = true
 		double d3 = lazy.get(); // 0.123 (memoized)
 		assertEquals(d3, (ans));
+	}
 
-		debug();
+	@Test
+	public void lazy2Test() {
+		Supplier<Double> sup = () -> 0.123;
 
+		Lazy<Double> lazy = Lazy.of(sup);
+
+		try {
+			TimeUnit.MILLISECONDS.sleep(200);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		assertFalse(lazy.isEvaluated());
+		var sut = lazy.get();
+		assertEquals(0.123d, sut); 
 	}
 
 	void debug() {
-
 	}
 
 }
