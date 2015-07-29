@@ -67,6 +67,24 @@ public class SingleThreadServer extends HttpServlet {
 
 		var resMap = Map.of("username", name, "point", pt);
 
+		try (var w = httpRes.getWriter()) {
+			// TODO: response
+			w.append("success");
+			w.flush();
+		} catch (IOException e) {
+			LOG.error(e.getMessage());
+		}
+	}
+
+	/** post */
+	@Override
+	protected void doPost(HttpServletRequest httpReq, HttpServletResponse httpRes) {
+		Optional<DummyTableDto> dto = selectUserInfoWhereId(4);
+		var pt = dto.map(v -> v.getPoint());
+		var name = dto.map(v -> v.getUserName());
+
+		var resMap = Map.of("username", name, "point", pt);
+
 		Semaphore semaphore = new Semaphore(1);
 
 		// critical section
@@ -74,12 +92,47 @@ public class SingleThreadServer extends HttpServlet {
 
 		semaphore.release();
 
+		// response ----
+		// TODO: response
 		try (var w = httpRes.getWriter()) {
-			// TODO: response
-			w.append("success");
-			w.flush();
+			httpRes.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
 		} catch (IOException e) {
-			LOG.error(e.getMessage());
+			LOG.error(e.getMessage(), e);
+		}
+	}
+
+	@Override
+	protected void doPut(HttpServletRequest httpReq, HttpServletResponse httpRes) {
+		Optional<DummyTableDto> dto = selectUserInfoWhereId(4);
+		var pt = dto.map(v -> v.getPoint());
+		var name = dto.map(v -> v.getUserName());
+
+		var resMap = Map.of("username", name, "point", pt);
+
+		Semaphore semaphore = new Semaphore(1);
+
+		// critical section
+		db.update(emptyMap());
+
+		semaphore.release();
+
+		// response ----
+		// TODO: response
+		try (var w = httpRes.getWriter()) {
+			httpRes.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+		} catch (IOException e) {
+			LOG.error(e.getMessage(), e);
+		}
+	}
+
+	@Override
+	protected void doDelete(HttpServletRequest httpReq, HttpServletResponse httpRes) {
+		// response ----
+		// TODO: response
+		try (var w = httpRes.getWriter()) {
+			httpRes.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+		} catch (IOException e) {
+			LOG.error(e.getMessage(), e);
 		}
 	}
 
@@ -91,19 +144,6 @@ public class SingleThreadServer extends HttpServlet {
 	List<DummyTableDto> selectUserInfoWhereId(List<Integer> id) {
 		var ret = db.selectWhereId(id);
 		return ret;
-	}
-
-	/** post */
-	@Override
-	protected void doPost(HttpServletRequest httpReq, HttpServletResponse httpRes) {
-
-		// response ----
-		// TODO: response
-		try (var w = httpRes.getWriter()) {
-			httpRes.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
-		}
 	}
 
 	void debug() {
