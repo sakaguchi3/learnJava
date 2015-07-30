@@ -22,6 +22,16 @@ import io.vavr.control.Try;
 public class FunctionTest {
 
 	@Test
+	void curry2Test() {
+		// int -> float -> double
+		Function1<Integer, Function1<Float, Double>> f1 = _int -> _float -> 0d + _int + _float;
+		// (int, float) -> double
+		Function2<Integer, Float, Double> f2 = (_int, _float) -> 0d + _int + _float;
+
+		Function1<Float, Double> f22 = f2.apply(1);
+	}
+
+	@Test
 	void curryVavrTest() {
 		Function3<Integer, Integer, Integer, Integer> func3Add = (a, b, c) -> (a + b + c);
 
@@ -114,7 +124,7 @@ public class FunctionTest {
 
 		assertFalse(lazy.isEvaluated());
 		var sut = lazy.get();
-		assertEquals(0.123d, sut); 
+		assertEquals(0.123d, sut);
 	}
 
 	void debug() {
