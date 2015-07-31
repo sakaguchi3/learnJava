@@ -30,6 +30,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.sakaguchi3.serverpro.api.Datasource;
 import com.github.sakaguchi3.serverpro.db.DummyTableDto;
 
@@ -46,6 +48,10 @@ public class SingleThreadServer extends HttpServlet {
 	private static final long serialVersionUID = 8907340394573966L;
 	/** Log instance */
 	protected static final Logger LOG = LogManager.getLogger();
+
+	protected static final ObjectMapper MAPPER = (new ObjectMapper()) //
+			.setSerializationInclusion(JsonInclude.Include.NON_EMPTY); // remove null
+
 	/** */
 	protected Datasource db = new Datasource();
 
@@ -67,37 +73,42 @@ public class SingleThreadServer extends HttpServlet {
 
 		var resMap = Map.of("username", name, "point", pt);
 
+		// resposne ----
+
 		try (var w = httpRes.getWriter()) {
-			// TODO: response
-			w.append("success");
+			var resJson = MAPPER.writeValueAsString(resMap);
+			w.append(resJson);
 			w.flush();
-		} catch (IOException e) {
-			LOG.error(e.getMessage());
+		} catch (IOException e1) {
+			LOG.info(e1.getMessage(), e1);
+			try {
+				httpRes.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			} catch (Exception e2) {
+				LOG.info(e2.getMessage(), e2);
+			}
 		}
 	}
 
 	/** post */
 	@Override
 	protected void doPost(HttpServletRequest httpReq, HttpServletResponse httpRes) {
-		Optional<DummyTableDto> dto = selectUserInfoWhereId(4);
-		var pt = dto.map(v -> v.getPoint());
-		var name = dto.map(v -> v.getUserName());
 
-		var resMap = Map.of("username", name, "point", pt);
+		db.insert(emptyMap());
 
-		Semaphore semaphore = new Semaphore(1);
-
-		// critical section
-		db.update(emptyMap());
-
-		semaphore.release();
+		var resMap = Map.of("status", 200);
 
 		// response ----
-		// TODO: response
 		try (var w = httpRes.getWriter()) {
-			httpRes.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
+			var resJson = MAPPER.writeValueAsString(resMap);
+			w.append(resJson);
+			w.flush();
+		} catch (IOException e1) {
+			LOG.info(e1.getMessage(), e1);
+			try {
+				httpRes.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			} catch (Exception e2) {
+				LOG.info(e2.getMessage(), e2);
+			}
 		}
 	}
 
@@ -117,11 +128,17 @@ public class SingleThreadServer extends HttpServlet {
 		semaphore.release();
 
 		// response ----
-		// TODO: response
 		try (var w = httpRes.getWriter()) {
-			httpRes.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
+			var resJson = MAPPER.writeValueAsString(resMap);
+			w.append(resJson);
+			w.flush();
+		} catch (IOException e1) {
+			LOG.info(e1.getMessage(), e1);
+			try {
+				httpRes.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+			} catch (Exception e2) {
+				LOG.info(e2.getMessage(), e2);
+			}
 		}
 	}
 
