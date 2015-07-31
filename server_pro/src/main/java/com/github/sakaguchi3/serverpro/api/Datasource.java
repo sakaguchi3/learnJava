@@ -51,6 +51,9 @@ public class Datasource {
 	}
 
 	public void update(Map<String, Object> d) {
+	}
+
+	public void insert(Map<String, Object> d) {
 
 	}
 
