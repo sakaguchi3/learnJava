@@ -20,7 +20,6 @@ public class PairTest {
 	}
 
 	private void debug() {
-
 	}
 
 }

@@ -9,14 +9,22 @@ import org.junit.jupiter.api.Test;
 
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
+import io.vavr.collection.Array;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.List;
 import io.vavr.collection.Stream;
+import io.vavr.collection.Vector;
 
 public class CollectionZipTest {
 
 	@Test
-	public void aTest() {
+	void zipWithIndex2Test() {
+		var v1 = Vector.of("v", "w", "x", "y", "z");
+
+		var sut = v1.zipWithIndex().filter(t -> t._2() % 2 == 0);
+
+		var ans = Array.of(Tuple.of("v", 0), Tuple.of("x", 2), Tuple.of("z", 4));
+		assertIterableEquals(ans, sut);
 		debug();
 	}
 

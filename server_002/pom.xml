@@ -1,0 +1,157 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.github.sakaguchi3</groupId>
+	<artifactId>server002</artifactId>
+	<version>0.0.1</version>
+	<packaging>war</packaging>
+
+	<properties>
+		<!-- java -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>11</java.version>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<!-- war -->
+		<wtp.version>none</wtp.version>
+		<maven.test.skip>true</maven.test.skip>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+
+	<!-- make war -->
+	<profiles>
+		<profile>
+			<id>local</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<environment>local</environment>
+			</properties>
+		</profile>
+		<profile>
+			<id>product</id>
+			<properties>
+				<environment>product</environment>
+			</properties>
+		</profile>
+		<profile>
+			<id>test</id>
+			<properties>
+				<environment>test</environment>
+			</properties>
+		</profile>
+	</profiles>
+
+	<dependencies>
+		<!-- test -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.6.2</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- production --> 
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.11.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.13.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>29.0-jre</version>
+		</dependency>
+		<!-- local-lib -->
+	</dependencies>
+
+	<build>
+		<!-- war -->
+		<resources>
+			<resource>
+				<filtering>false</filtering>
+				<directory>src/main/resources</directory>
+				<excludes>
+				</excludes>
+			</resource>
+			<resource>
+				<filtering>false</filtering>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<filtering>false</filtering>
+				<directory>src/test/resources</directory>
+			</testResource>
+			<testResource>
+				<filtering>false</filtering>
+				<directory>src/test/java</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</testResource>
+		</testResources>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<!-- plugin -->
+		<plugins>
+			<!-- war -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.2.3</version>
+				<configuration>
+					<webXml>src/main/webapp/WEB-INF/web.xml</webXml>
+					<webResources>
+						<resource>
+							<directory>src/config/${environment}</directory>
+							<targetPath>WEB-INF/classes/</targetPath>
+							<includes>
+								<include>log4j.xml</include>
+								<include>**.properties</include>
+							</includes>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<!-- <executable>${env.JAVA_HOME_8}/bin/javac</executable> -->
+					<encoding>UTF-8</encoding>
+					<showWarnings>true</showWarnings>
+					<showDeprecation>true</showDeprecation>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.10</version>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<wtpversion>${wtp.version}</wtpversion>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

@@ -1,14 +1,27 @@
 package com.github.sakaguchi3.jbatch002.vavr;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+
+import java.util.function.Function;
 
 import org.junit.jupiter.api.Test;
 
 import io.vavr.collection.Seq;
 import io.vavr.control.Option;
 
-
 public class OptionTest {
+	
+	@Test
+	void funcTest() {
+		var opNum1 = Option.of(1);
+		Function<Integer, Function<Integer, Integer>> func = x -> y -> x + y;
+
+		Option<Function<Integer, Integer>> opFun1 = opNum1.map(func);
+
+		var opResult = opFun1.map(f -> f.apply(0));
+		assertEquals(1, opResult.get());
+	}
 
 	@Test
 	public void test01() {

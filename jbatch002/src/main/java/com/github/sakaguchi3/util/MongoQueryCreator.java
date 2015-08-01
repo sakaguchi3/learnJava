@@ -61,8 +61,8 @@ public class MongoQueryCreator {
 				pw.println("/** ------------ " + media + " ------------ */");
 				pw.println();
 
-				// fun: ((String, String) => String) = (dsp, seatid) => (query)
-				Function2<String, List<String>, String> seatToQuery = (dsp, _seatid) -> createQuery(media, dsp, _seatid);
+				// fun: ((String, String) => String) = (abc, seatid) => (query)
+				Function2<String, List<String>, String> seatToQuery = (abc, _seatid) -> createQuery(media, abc, _seatid);
 				var query = allowSeatMap2.entrySet().stream()//
 						.map(e -> seatToQuery.apply(e.getKey(), e.getValue())) //
 						.collect(Collectors.joining("\n"));
@@ -80,7 +80,7 @@ public class MongoQueryCreator {
 	// private
 	// ------------------------------------------------------
 
-	protected String createQuery(String media, String dsp, List<String> seatIds) {
+	protected String createQuery(String media, String abc, List<String> seatIds) {
 		var _seatIds = seatIds.stream()//
 				.map(v -> "\"" + v + "\"") //
 				.collect(Collectors.joining(","));
@@ -88,7 +88,7 @@ public class MongoQueryCreator {
 				+ "db.getCollection(\"media_allowed_seat\").insert({\n" + //
 				"  \"media\": \"" + media + "\",\n" + //
 				"  \"seat\": {\n" + //
-				"    \"" + dsp + "\": [  \n" + //
+				"    \"" + abc + "\": [  \n" + //
 				"      " + _seatIds + "  \n" + //
 				"    ]\n" + //
 				"  }\n" + //
