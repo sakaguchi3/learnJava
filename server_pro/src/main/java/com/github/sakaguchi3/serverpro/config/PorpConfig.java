@@ -30,7 +30,7 @@ import org.apache.logging.log4j.Logger;
  *
  * @author sakaguchi
  */
-public class Config {
+public class PorpConfig {
 
 	// ---------------------------------------------------------
 	// field
@@ -39,7 +39,7 @@ public class Config {
 	/**
 	 * The instance of Configuration that this Class is storing
 	 */
-	private static Config configure = null;
+	private static PorpConfig configure = null;
 
 	/**
 	 * CONFIG_FILENAME is the file location of the configuration properties file
@@ -67,10 +67,10 @@ public class Config {
 	 * @return Config the stored Instance of this class
 	 * @throws IOException
 	 */
-	public static synchronized Optional<Config> getInstance() {
+	public static synchronized Optional<PorpConfig> getInstance() {
 		if (configure == null) {
 			try {
-				configure = new Config(CONFIG_FILENAME);
+				configure = new PorpConfig(CONFIG_FILENAME);
 			} catch (Exception e) {
 				System.out.println("Config error :" + e.getMessage());
 				LOG.error("Config error :" + e.getMessage(), e);
@@ -86,7 +86,7 @@ public class Config {
 	 * 
 	 * @throws IOException
 	 */
-	private Config(String configFileName) throws IOException {
+	private PorpConfig(String configFileName) throws IOException {
 		loadConf(configFileName);
 	}
 
@@ -104,7 +104,7 @@ public class Config {
 	void loadConf(String configFileName) throws IOException {
 
 		// config file
-		URL configFile = Config.class.getClassLoader().getResource(configFileName);
+		URL configFile = PorpConfig.class.getClassLoader().getResource(configFileName);
 
 		// load config info from properties file and set info to Properties instance.
 		try (InputStream in = configFile.openStream();) {
