@@ -22,7 +22,7 @@ import javax.servlet.annotation.WebListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.github.sakaguchi3.serverpro.config.Config;
+import com.github.sakaguchi3.serverpro.config.PorpConfig;
 import com.github.sakaguchi3.serverpro.config.ResourceManager;
 
 @WebListener
@@ -30,7 +30,7 @@ public class BaseServletContextListener implements ServletContextListener {
 
 	/** */
 	static final Logger LOG = LogManager.getLogger();
-	Config config;
+	PorpConfig config;
 	ResourceManager resource;
 	
 	public BaseServletContextListener() {
@@ -42,7 +42,7 @@ public class BaseServletContextListener implements ServletContextListener {
 
 		System.out.println("-------------> CONTEXT INITIALIZE <-------------");
 
-		var confOp = Config.getInstance();
+		var confOp = PorpConfig.getInstance();
 		var resourceOp = ResourceManager.getInstance();
 		if (confOp.isEmpty() || resourceOp.isEmpty()) {
 			LOG.error("init config, resource err. shutdown.");
