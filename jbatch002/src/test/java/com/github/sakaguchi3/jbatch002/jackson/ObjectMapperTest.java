@@ -1,24 +1,40 @@
 package com.github.sakaguchi3.jbatch002.jackson;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-
 
 public class ObjectMapperTest {
+	private ObjectMapper mapperRemoveNull = null;
+
+	@BeforeEach
+	void init() {
+		mapperRemoveNull = new ObjectMapper();
+		mapperRemoveNull.setSerializationInclusion(JsonInclude.Include.NON_EMPTY); // remove null
+	}
 
 	@Test
-	public void aTest() {
+	public void removeNullTest() throws JsonProcessingException {
+		var map = new HashMap<String, Object>();
+		map.put("key1", null);
+		map.put("key2", "val2");
+
+		var json = mapperRemoveNull.writeValueAsString(map);
+		assertEquals("{\"key2\":\"val2\"}", json);
+
+		var mapperNotRemoveNull = new ObjectMapper();
+		var jsonBad = mapperNotRemoveNull.writeValueAsString(map);
+		assertEquals("{\"key1\":null,\"key2\":\"val2\"}", jsonBad);
 		debug();
 	}
 
@@ -40,7 +56,7 @@ public class ObjectMapperTest {
 
 		// {"d0":{"key8":[29,33,19.9],"key2":3.9,"key3":{"d3":"aaaa"},"ke9":"ushi"},"d1":"dddd"}
 		var jsonFromMap = mapper.writeValueAsString(d0M1);
-		var mapFromJson = mapper.readValue(jsonFromMap, Map.class); 
+		var mapFromJson = mapper.readValue(jsonFromMap, Map.class);
 
 		debug();
 	}
@@ -61,23 +77,7 @@ public class ObjectMapperTest {
 				"m2", Map.of("key_m2", 2), //
 				"m3", d1_m1);
 
-		var mapper = new ObjectMapper();
-		mapper //
-				.setSerializationInclusion(JsonInclude.Include.USE_DEFAULTS) //
-				.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS) //
-				.setSerializationInclusion(JsonInclude.Include.NON_EMPTY) //
-				.enable(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS) //
-				.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES) //
-				.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true) //
-				.setVisibility(mapper //
-						.getSerializationConfig() //
-						.getDefaultVisibilityChecker() //
-						.withFieldVisibility(JsonAutoDetect.Visibility.ANY) //
-						.withGetterVisibility(JsonAutoDetect.Visibility.NONE) //
-						.withSetterVisibility(JsonAutoDetect.Visibility.NONE) //
-						.withCreatorVisibility(JsonAutoDetect.Visibility.NONE) //
-						.withIsGetterVisibility(JsonAutoDetect.Visibility.NONE));
-		var json1 = mapper.writeValueAsString(d0_k0);
+		var json1 = mapperRemoveNull.writeValueAsString(d0_k0);
 		debug();
 	}
 
