@@ -1,35 +1,5 @@
 package com.github.sakaguchi3.jbatch002.vavr;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.DisplayName;
-import static org.junit.jupiter.api.Assertions.*;
-import static java.time.Duration.*;
-import static java.util.Optional.ofNullable;
-import static java.util.Collections.*;
-import static java.util.Comparator.*;
-import static java.util.Objects.*;
-import static java.util.Optional.*;
-import static java.util.stream.Collectors.*;
-import static java.time.Duration.*;
-import static java.util.Collections.*;
-import static java.util.Comparator.*;
-import static java.util.Objects.*;
-import static java.util.Optional.*;
-import static java.util.stream.Collectors.*;
-import static java.util.stream.Stream.*;
-import static io.vavr.collection.HashMap.*;
-import static io.vavr.collection.HashMultimap.*;
-import static io.vavr.collection.HashSet.*;
-import static io.vavr.control.Try.*;
-import static io.vavr.API.*;
-import static io.vavr.API.Match.*;
-import static io.vavr.Predicates.*;
-import io.vavr.API.*;
-import io.vavr.control.*;
-import org.apache.logging.log4j.*;
-import java.util.Collections.*;
-import java.util.*;
-
 import static io.vavr.API.$;
 import static io.vavr.API.Case;
 import static io.vavr.API.For;
@@ -37,6 +7,8 @@ import static io.vavr.API.Match;
 import static io.vavr.API.None;
 import static io.vavr.API.Some;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 
@@ -59,6 +31,18 @@ import io.vavr.control.Validation;
 import testcase.ValidationFuga;
 
 public class ForTest {
+
+	@Test
+	void optionTest() {
+		var op1 = Option.of(1);
+		var op2 = Option.of(2);
+		var op3 = Option.of(3);
+
+		var resultFlatmap = op1.flatMap(v1 -> op2.flatMap(v2 -> op3.map(v3 -> v1 + v2 + v3)));
+		var resultFor = For(op1, op2, op3) //
+				.yield((v1, v2, v3) -> v1 + v2 + v3);
+		assertTrue(resultFlatmap.eq(resultFor));
+	}
 
 	@Test
 	void validationFailForTest() {
