@@ -112,20 +112,21 @@ public class SingleThreadServer extends HttpServlet {
 		}
 	}
 
+	/** */
 	@Override
 	protected void doPut(HttpServletRequest httpReq, HttpServletResponse httpRes) {
-		Optional<DummyTableDto> dto = selectUserInfoWhereId(4);
-		var pt = dto.map(v -> v.getPoint());
-		var name = dto.map(v -> v.getUserName());
-
-		var resMap = Map.of("username", name, "point", pt);
-
+		var reqMap = Map.<String, Object>of("id", 4);
 		Semaphore semaphore = new Semaphore(1);
 
 		// critical section
-		db.update(emptyMap());
+		db.update(reqMap);
 
 		semaphore.release();
+
+		Optional<DummyTableDto> dto = selectUserInfoWhereId(4);
+		var resMap = dto //
+				.map(v -> Map.of("username", v.getUserName(), "point", v.getPoint())) //
+				.orElse(emptyMap());
 
 		// response ----
 		try (var w = httpRes.getWriter()) {
@@ -142,6 +143,7 @@ public class SingleThreadServer extends HttpServlet {
 		}
 	}
 
+	/**  */
 	@Override
 	protected void doDelete(HttpServletRequest httpReq, HttpServletResponse httpRes) {
 		// response ----
