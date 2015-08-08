@@ -30,9 +30,9 @@ public class BaseServletContextListener implements ServletContextListener {
 
 	/** */
 	static final Logger LOG = LogManager.getLogger();
-	PorpConfig config;
-	ResourceManager resource;
-	
+	PorpConfig config = null;
+	ResourceManager resource = null;
+
 	public BaseServletContextListener() {
 		System.out.println("constructor");
 	}
@@ -62,7 +62,7 @@ public class BaseServletContextListener implements ServletContextListener {
 		resource.shutdown();
 	}
 
-	void debug() { 
+	void debug() {
 	}
 
 }
