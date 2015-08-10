@@ -16,7 +16,7 @@
 	<!-- -->
 	<servlet>
 		<servlet-name>singlethread</servlet-name>
-		<servlet-class>com.github.sakaguchi3.server002.server.SingleThreadServer</servlet-class>
+		<servlet-class>com.github.sakaguchi3.serverpro.server.SingleThreadServer</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>singlethread</servlet-name>
