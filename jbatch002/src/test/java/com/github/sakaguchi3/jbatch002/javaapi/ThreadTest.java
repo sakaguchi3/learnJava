@@ -2,26 +2,23 @@ package com.github.sakaguchi3.jbatch002.javaapi;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
 
 public class ThreadTest {
 
 	@Test
-	public void future01Test() {
-
-		debug();
-	}
-
-	@Test
 	void executiveServiceTest() throws InterruptedException {
 		var pool = Executors.newCachedThreadPool();
 
 		var run = new MyRun();
-		pool.submit(run);
+		// return value
+		Future<?> future = pool.submit(run);
+		// return nothing(void)
+		pool.execute(run);
 
 		for (int i = 0; i < 10; i++) {
 			run.add(i);
