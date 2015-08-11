@@ -36,7 +36,7 @@ public class OptionalTest {
 		var t2 = sw.getTime(TimeUnit.MILLISECONDS);
 
 		assertTrue(t1 < 50);
-		assertTrue(t2 >= 300);
+		assertTrue(t2 >= 250);
 	}
 
 	int heavy() {
