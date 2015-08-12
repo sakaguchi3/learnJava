@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+
+    <appender name="Console_Appender" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.out"/>
+        <param name="ImmediateFlush" value="true"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-5p %d [%t] %m%n" />
+        </layout>
+    </appender>
+
+    <appender name="Debug_File_Appender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="./logs/jbatch002-common_debug.log"/>
+        <param name="Append" value="true" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'"/>
+        <param name="Encoding" value="UTF-8" />
+        <param name="Threshold" value="DEBUG" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="conversionPattern" value="[%d] [%05p] [%t]( %-30F:%4L) - %m%n"/>
+		</layout>
+    </appender>
+
+    <appender name="Info_File_Appender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="./logs/jbatch002-common_info.log"/>
+        <param name="Append" value="true" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'"/>
+        <param name="Encoding" value="UTF-8" />
+        <param name="Threshold" value="INFO" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="conversionPattern" value="[%d] [%05p] [%t]( %-30F:%4L) - %m%n"/>
+		</layout>
+    </appender>
+
+    <appender name="Warn_File_Appender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="./logs/jbatch002-common_warn.log"/>
+        <param name="Append" value="true" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'"/>
+        <param name="Encoding" value="UTF-8" />
+        <param name="Threshold" value="WARN" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="conversionPattern" value="[%d] [%05p] [%t]( %-30F:%4L) - %m%n"/>
+		</layout>
+    </appender>
+       
+    <appender name="Error_File_Appender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="./logs/jbatch002-common_error.log"/>
+        <param name="Append" value="true" />
+		<param name="Encoding" value="UTF-8" />
+        <param name="Threshold" value="ERROR" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="conversionPattern" value="[%d] [%05p] [%t]( %-30F:%4L) - %m%n"/>
+		</layout>
+    </appender>    
+ 				
+	<category name="cc.jbatch002" >
+		<level value="debug" />
+        <appender-ref ref="Debug_File_Appender" />
+        <appender-ref ref="Console_Appender" />
+	</category>
+
+	<root>
+		<level value="debug" />	
+		<appender-ref ref="Info_File_Appender" />
+		<appender-ref ref="Error_File_Appender" />
+	</root>	
+ 		
+ 	
+</log4j:configuration>
