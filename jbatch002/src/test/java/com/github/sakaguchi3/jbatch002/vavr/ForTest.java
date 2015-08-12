@@ -129,26 +129,6 @@ public class ForTest {
 	}
 
 	@Test
-	public void scalaOpTest() {
-		var scalaSome = akka.japi.Option.option(1);
-		var scalaSome2 = akka.japi.Option.option(2);
-		var scalaNone = akka.japi.Option.option(null);
-		var scalaNone2 = akka.japi.Option.none();
-
-//		System.out.println(scalaSome);
-//		System.out.println(scalaSome2);
-//		System.out.println(scalaNone);
-//		System.out.println(scalaNone2);
-
-		// List((1, 2))
-		var for1 = For(scalaSome, scalaSome2) //
-				.yield(Tuple::of) //
-				.map(v -> String.format("(%d, %d)", v._1(), v._2())) //
-				.toList();
-		debug();
-	}
-
-	@Test
 	public void vavrLstTest() {
 //		System.out.println("vavrLstTest -------------------");
 		var j1 = List.of(1, 2);
