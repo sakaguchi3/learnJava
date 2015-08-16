@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- eclipse -->
+<Configuration status="info" strict="true"
+	name="XMLConfigTest" packages="org.apache.logging.log4j.test">
+	<Properties>
+		<Property name="baseDir">./logs</Property>
+		<Property name="baseFilename">jbatch_jdk15</Property>
+		<Property name="pattern">[%d],%05p,%t,[%c:%L] - %m%n</Property>
+		<Property name="pattern2">[%d],%05p,%t,[%c{1}:%L] - %m%n</Property>
+	</Properties>
+
+
+	<Appenders>
+		<Appender type="Console" name="STDOUT">
+			<Layout type="PatternLayout" pattern="${pattern2}" />
+			<Filters>
+				<Filter type="MarkerFilter" marker="FLOW" onMatch="DENY"
+					onMismatch="NEUTRAL" />
+				<Filter type="MarkerFilter" marker="EXCEPTION" onMatch="DENY"
+					onMismatch="ACCEPT" />
+			</Filters>
+		</Appender>
+		<Appender type="Console" name="FLOW">
+			<Layout type="PatternLayout" pattern="%C{1}.%M %m %ex%n" />
+			<Filters>
+				<Filter type="MarkerFilter" marker="FLOW" onMatch="ACCEPT"
+					onMismatch="NEUTRAL" />
+				<Filter type="MarkerFilter" marker="EXCEPTION"
+					onMatch="ACCEPT" onMismatch="DENY" />
+			</Filters>
+		</Appender>
+		<RollingFile name="RollingFileDebug"
+			fileName="${baseDir}/${baseFilename}_debug.log"
+			filePattern="${baseDir}/${baseFilename}-%d{MM-dd-yyyy}_debug.log.gz"
+			ignoreExceptions="false">
+			<PatternLayout>
+				<Pattern>${pattern}</Pattern>
+			</PatternLayout>
+			<filters>
+				<Filter type="ThresholdFilter" level="debug" />
+			</filters>
+			<TimeBasedTriggeringPolicy />
+		</RollingFile>
+		<RollingFile name="RollingFileWarn"
+			fileName="${baseDir}/${baseFilename}_warn.log"
+			filePattern="${baseDir}/${baseFilename}-%d{MM-dd-yyyy}_warn.log.gz"
+			ignoreExceptions="false">
+			<PatternLayout>
+				<Pattern>${pattern}</Pattern>
+			</PatternLayout>
+			<filters>
+				<Filter type="ThresholdFilter" level="warn" />
+			</filters>
+			<TimeBasedTriggeringPolicy />
+		</RollingFile>
+		<Async name="Async" bufferSize="262144" includeLocation="true">
+			<AppenderRef ref="RollingFileDebug" />
+			<AppenderRef ref="RollingFileWarn" />
+			<LinkedTransferQueue />
+		</Async>
+	</Appenders>
+
+	<Loggers>
+		<Logger name="com.github" level="trace" additivity="false">
+			<AppenderRef ref="STDOUT" />
+		</Logger>
+		<Root level="error">
+			<AppenderRef ref="STDOUT" />
+		</Root>
+	</Loggers>
+
+</Configuration>
