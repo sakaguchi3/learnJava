@@ -27,7 +27,7 @@ import io.vavr.control.Try;
 import io.vavr.control.Validation;
 import io.vavr.control.Validation.Invalid;
 import io.vavr.control.Validation.Valid;
-import testcase.ValidationFuga;
+import testcase.valid.ValidationFuga;
 
 public class CaseTest {
 

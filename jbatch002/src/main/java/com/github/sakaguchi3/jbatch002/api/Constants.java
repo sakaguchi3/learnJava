@@ -1,4 +1,4 @@
-package com.github.sakaguchi3.jbatch002.io;
+package com.github.sakaguchi3.jbatch002.api;
 
 /**
  *

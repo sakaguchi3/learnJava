@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
-import com.github.sakaguchi3.util.FileRead;
+import com.github.sakaguchi3.jbatch002.api.FileIo;
 import com.github.sakaguchi3.util.JavaMail;
 
 public class JavaMailTest {
@@ -12,12 +12,12 @@ public class JavaMailTest {
 	@Test
 	public void t01Test() {
 
-		FileRead reader = new FileRead();
-		String fileapath = "mail.dat";
+		var reader = new FileIo();
+		var fileapath = "mail.dat";
 
 		try {
 
-			Optional<String> contentOp = reader.readResource(fileapath);
+			Optional<String> contentOp = reader.readResources(fileapath);
 			if (contentOp.isEmpty()) {
 				System.out.println("err");
 				return;
@@ -32,7 +32,7 @@ public class JavaMailTest {
 			String senderName = "_name";
 			String subject = "新年のご挨拶";
 			String content = contentOp.get();
-			
+
 			mail.send(to, from, senderName, subject, content);
 
 		} catch (Exception e) {
@@ -45,17 +45,4 @@ public class JavaMailTest {
 	private void debug() {
 
 	}
-
-//	import static org.hamcrest.CoreMatchers.*;
-//	import static org.junit.Assert.*;
-//	import static org.junit.Assert.*;	
-//	@Test
-//	public void importPackage() {
-//		if (true) {
-//			assertEquals(true, (true));
-//		} else {
-//			fail("empty");
-//		}
-//	}
-
 }

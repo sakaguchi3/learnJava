@@ -8,10 +8,10 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import testcase.Animal;
-import testcase.AnimalDog;
-import testcase.AnimalHuman;
-import testcase.AnimalWomen;
+import testcase.generics.Animal;
+import testcase.generics.AnimalDog;
+import testcase.generics.AnimalHuman;
+import testcase.generics.AnimalWomen;
 
 public class GenericsTest {
 	@Test
