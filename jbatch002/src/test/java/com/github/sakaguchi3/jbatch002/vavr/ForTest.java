@@ -28,7 +28,7 @@ import io.vavr.collection.Seq;
 import io.vavr.collection.Stream;
 import io.vavr.control.Option;
 import io.vavr.control.Validation;
-import testcase.ValidationFuga;
+import testcase.valid.ValidationFuga;
 
 public class ForTest {
 

@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
-import com.github.sakaguchi3.jbatch002.io.Constants;
+import com.github.sakaguchi3.jbatch002.api.Constants;
 
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;

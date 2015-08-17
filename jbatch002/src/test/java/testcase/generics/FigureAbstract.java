@@ -1,4 +1,4 @@
-package testcase;
+package testcase.generics;
 
 public abstract class FigureAbstract<T extends FigureAbstract<T>> {
 

@@ -1,4 +1,4 @@
-package testcase;
+package testcase.generics;
 
 import java.util.Objects;
 
