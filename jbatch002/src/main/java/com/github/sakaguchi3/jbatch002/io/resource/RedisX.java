@@ -1,9 +1,7 @@
-package com.github.sakaguchi3.jbatch002.io.db;
+package com.github.sakaguchi3.jbatch002.io.resource;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
-
-import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
 import com.github.sakaguchi3.jbatch002.api.Constants;
 
@@ -13,11 +11,11 @@ import redis.clients.jedis.JedisCluster;
 /**
  *
  */
-public class MyRedis {
+public class RedisX {
 
 	private JedisCluster jedis;
 
-	public MyRedis() {
+	public RedisX() {
 		var hostPortsStr = Constants.REDIS_CLUSTER_ACTION;
 		var nodes = Arrays.asList(hostPortsStr.split(",")).stream() //
 				.map(v -> {
