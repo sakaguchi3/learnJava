@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
+import com.github.sakaguchi3.jbatch002.io.resource.RedisX;
+
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisCluster;
 
@@ -18,7 +20,7 @@ public class MyRedisTest {
 	@Test
 	public void jedisSingleTest() {
 
-		var myRedis = new MyRedis();
+		var myRedis = new RedisX();
 //		try (var js = new Jed("example-dev.localdomain", 6379);) {
 		try (var js = new Jedis("localhost", 6379);) {
 
@@ -46,7 +48,7 @@ public class MyRedisTest {
 	@Test
 	public void jedisClusterTest() {
 
-		var myRedis = new MyRedis();
+		var myRedis = new RedisX();
 		try (var jc = myRedis.getJedis();) {
 
 			// jedis cluster

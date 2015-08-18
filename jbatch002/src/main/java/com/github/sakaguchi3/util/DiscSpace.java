@@ -4,20 +4,20 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.google.common.base.Strings;
 
 import io.vavr.control.Try;
 
-public class DiscSpaceCalc {
+public class DiscSpace {
 
 	// ------------------------------------------------------
-	// field 
+	// field
 	// ------------------------------------------------------
 
-	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+	protected static final Logger LOG = LogManager.getLogger();
 
 	// const ---
 
@@ -30,32 +30,24 @@ public class DiscSpaceCalc {
 
 	// ----
 
-	// Function ----
-
-	/** */
-	protected final StringBuilder sb = new StringBuilder();
-
-	final String ERR_MSG = "Not exsist. PATH:=";
-
 	// ------------------------------------------------------
-	// public 
+	// public
 	// ------------------------------------------------------
 
 	public String calcDiskSize(String path) {
 
 		if (Strings.isNullOrEmpty(path)) {
-			String msg = ERR_MSG + path + "\n";
+			String msg = "Not exsist. PATH:=" + path + "\n";
 			return msg;
 		}
 
 		final File file = new File(path);
 		if (!file.exists()) {
-			String msg = ERR_MSG + path + "\n";
+			String msg = "Not exsist. PATH:=" + path + "\n";
 			return msg;
 		}
 
-		// clear
-		sb.setLength(0);
+		final StringBuilder sb = new StringBuilder();
 
 		// total disk space in bytes.
 		long totalSpace = file.getTotalSpace();
@@ -82,8 +74,9 @@ public class DiscSpaceCalc {
 
 		double freeSizeRate = 100.0d * usableSpace / totalSpace;
 
-		var bdTry = Try.of(() -> BigDecimal.valueOf(freeSizeRate).setScale(5, RoundingMode.UP)) //
-				.onFailure(v -> LOGGER.error(v.getMessage(), v));
+		var bdTry = Try.of(() -> BigDecimal.valueOf(freeSizeRate)) //
+				.map(b -> b.setScale(5, RoundingMode.UP)) //
+				.onFailure(v -> LOG.error(v.getMessage(), v));
 
 		if (bdTry.isFailure()) {
 			var str = sb.toString();
@@ -112,7 +105,4 @@ public class DiscSpaceCalc {
 	// private
 	// ------------------------------------------------------
 
-	private void debug() {
-
-	}
 }
