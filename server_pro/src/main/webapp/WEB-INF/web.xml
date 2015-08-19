@@ -25,5 +25,15 @@
 
 
 	<!-- -->
+	<servlet>
+		<servlet-name>restUser</servlet-name>
+		<servlet-class>com.github.sakaguchi3.serverpro.server.RestUserServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>restUser</servlet-name>
+		<url-pattern>/api/user</url-pattern>
+	</servlet-mapping>
+
+	<!-- -->
 
 </web-app>
