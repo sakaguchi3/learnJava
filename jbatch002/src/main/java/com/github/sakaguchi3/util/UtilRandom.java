@@ -1,13 +1,9 @@
 package com.github.sakaguchi3.util;
 
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.DoubleSupplier;
-import java.util.function.IntSupplier;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import org.apache.commons.lang3.RandomStringUtils;
 
 public class UtilRandom {
 
@@ -18,62 +14,73 @@ public class UtilRandom {
 	// rand
 	private static final ThreadLocalRandom RAND = ThreadLocalRandom.current();
 
-	private static DoubleSupplier randDouble = () -> Math.random();
-
-	private static IntSupplier randInt = () -> RAND.nextInt();
-
-	private static Supplier<String> randStr = () -> RandomStringUtils.randomAlphabetic(16);
-
 	// ---------------------------------------------------------------------------------------------
 	// - public method
 	// ---------------------------------------------------------------------------------------------
 
+	public static Random getRandom() {
+		return RAND;
+	}
+
 	public static double randDouble() {
-		double d = randDouble.getAsDouble();
-		return d;
+		return RAND.nextDouble();
+	}
+
+	public static double randDouble(double bound) {
+		return RAND.nextDouble(bound);
 	}
 
 	public static int randInt() {
-		int i = randInt.getAsInt();
-		return i;
+		return RAND.nextInt();
 	}
 
-	public static String randStr() {
-		String s = randStr.get();
-		return s;
+	public static int randInt(int bound) {
+		return RAND.nextInt(bound);
 	}
 
-	/** make random alphabet with apache library */
-	public static String randomAlphabetic(int len) {
-		return RandomStringUtils.randomAlphabetic(len);
+	/** [A-Za-z] make random alphabet with standard library */
+	public static String randAlphabetic(int len) {
+		final var alphabetUpperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+		final var alphabetFull = alphabetUpperCase + alphabetUpperCase.toLowerCase();
+		final var stringLen = alphabetFull.length();
+
+		var sb = new StringBuilder();
+		for (int i = 0; i < len; i++) {
+			var index = RAND.nextInt(stringLen);
+			var c = alphabetFull.charAt(index);
+			sb.append(c);
+		}
+		return sb.toString();
 	}
 
-	/** make random alphabet with standard library */
-	public static String randomAlphabetic2(int len) {
-		var alphabetLow = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		var alphabetFull = alphabetLow + alphabetLow.toLowerCase() + "0123456789";
+	/** [A-Za-z0-9] make random alphabet and numeric with standard library */
+	public static String randomAlphaNumeric(int len) {
+		final var alphabetUpperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+		final var alphabetFull = alphabetUpperCase + alphabetUpperCase.toLowerCase() + "0123456789";
+		final var stringLen = alphabetFull.length();
 
 		var str = IntStream.range(0, len) //
-				.map(__ -> RAND.nextInt(alphabetFull.length())) //
+				.map(__ -> RAND.nextInt(stringLen)) //
 				.mapToObj(_index -> alphabetFull.charAt(_index)) //
 				.map(String::valueOf) //
-				.collect(Collectors.joining()); 
+				.collect(Collectors.joining());
 		return str;
 	}
 
 	/**
 	 * 一定の確率でtrueを返す。
 	 */
-	public static boolean randomTrue(int percent) {
+	public static boolean randomTrue(double percent) {
 		if (100 <= percent) {
 			return true;
 		}
 		if (percent <= 0) {
 			return false;
 		}
-		// [0, 100]で考える
-		final int randInt = RAND.nextInt(100);
-		return (randInt <= percent);
+		var randNum = RAND.nextDouble(100);
+		return (randNum <= percent);
 	}
 
 	// ---------------------------------------------------------------------------------------------
