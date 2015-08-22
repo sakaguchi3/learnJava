@@ -1,7 +1,5 @@
 package com.github.sakaguchi3.jbatch002.apache.lang3;
 
-import java.util.Set;
-
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 

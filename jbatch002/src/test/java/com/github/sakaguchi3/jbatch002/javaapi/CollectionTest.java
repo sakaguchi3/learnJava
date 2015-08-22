@@ -1,5 +1,8 @@
 package com.github.sakaguchi3.jbatch002.javaapi;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -9,12 +12,6 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 import com.google.common.base.Objects;
-
-// Log4j2 & JUnit5 ----------
-import org.apache.logging.log4j.*;
-import org.junit.jupiter.api.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static java.time.Duration.*;
 
 public class CollectionTest {
 

@@ -1,10 +1,5 @@
 package com.github.sakaguchi3.jbatch002.ec;
 
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
-
-import java.util.List;
-
-import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Maps;
 import org.junit.jupiter.api.Test;
 
