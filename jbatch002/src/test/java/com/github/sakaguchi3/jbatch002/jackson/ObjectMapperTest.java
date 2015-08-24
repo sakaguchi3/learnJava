@@ -1,6 +1,7 @@
 package com.github.sakaguchi3.jbatch002.jackson;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,14 +14,38 @@ import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.sakaguchi3.util.UtilJson;
+import com.google.common.base.MoreObjects;
 
 public class ObjectMapperTest {
+
 	private ObjectMapper mapperRemoveNull = null;
 
 	@BeforeEach
 	void init() {
 		mapperRemoveNull = new ObjectMapper();
 		mapperRemoveNull.setSerializationInclusion(JsonInclude.Include.NON_EMPTY); // remove null
+	}
+
+	@Test
+	void classToJsonTest() throws IOException {
+		var hoge10 = Hoge.of(3);
+		var json10 = UtilJson.toJson(hoge10);
+		var hoge11 = UtilJson.toClass(json10, Hoge.class);
+		assertEquals(3, hoge11.num);
+		assertNull(hoge11.str);
+		
+		var hoge20 = Hoge.of(1, "a");
+		var json20 = UtilJson.toJson(hoge20);
+		var hoge21 = UtilJson.toClass(json20, Hoge.class);
+		assertEquals(1, hoge21.num);
+		assertEquals("a", hoge21.str);
+
+		var hoge30 = Hoge.of("s");
+		var json30 = UtilJson.toJson(hoge30);
+		var hoge31 = UtilJson.toClass(json30, Hoge.class);
+		assertEquals("s", hoge31.str);
+		assertNull(hoge31.num); 
 	}
 
 	@Test
@@ -84,4 +109,34 @@ public class ObjectMapperTest {
 	void debug() {
 	}
 
+	private static class Hoge {
+		public Integer num = null;
+		public String str = null;
+
+		public static Hoge of(int num) {
+			var a = new Hoge();
+			a.num = num;
+			return a;
+		}
+
+		public static Hoge of(String s) {
+			var a = new Hoge();
+			a.str = s;
+			return a;
+		}
+
+		public static Hoge of(int num, String s) {
+			var a = new Hoge();
+			a.num = num;
+			a.str = s;
+			return a;
+		}
+
+		public String toString() {
+			return MoreObjects.toStringHelper(this) //
+					.add("num", num) //
+					.add("str", str) //
+					.toString();
+		}
+	}
 }

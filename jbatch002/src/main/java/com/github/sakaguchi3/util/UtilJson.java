@@ -1,36 +1,78 @@
 package com.github.sakaguchi3.util;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationFeature;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+
+import java.io.IOException;
+import java.util.Optional;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+
+import io.vavr.control.Try;
 
 public class UtilJson {
 
-	private static final ObjectMapper mapper = new ObjectMapper();
+	// ---------------------------------------------------------------------------------------------
+	// - filed
+	// ---------------------------------------------------------------------------------------------
 
-	static {
-		setJacksonMapperConfig(mapper);
-	}
+	private static final Logger log = LogManager.getLogger();
 
-	private static ObjectMapper setJacksonMapperConfig(ObjectMapper mapper) {
-		mapper //
-				.setSerializationInclusion(JsonInclude.Include.USE_DEFAULTS) //
-				.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS) //
-				.setSerializationInclusion(JsonInclude.Include.NON_EMPTY) //
-				.enable(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS) //
-				.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES) //
-				.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true) //
-				.setVisibility(mapper //
-						.getSerializationConfig() //
-						.getDefaultVisibilityChecker() //
-						.withFieldVisibility(JsonAutoDetect.Visibility.ANY) //
-						.withGetterVisibility(JsonAutoDetect.Visibility.NONE) //
-						.withSetterVisibility(JsonAutoDetect.Visibility.NONE) //
-						.withCreatorVisibility(JsonAutoDetect.Visibility.NONE) //
-						.withIsGetterVisibility(JsonAutoDetect.Visibility.NONE));
+	private static final ObjectMapper mapper = new ObjectMapper() //
+			.setSerializationInclusion(NON_EMPTY) // remove null value
+	;
+
+	// ---------------------------------------------------------------------------------------------
+	// - public method
+	// ---------------------------------------------------------------------------------------------
+
+	public static ObjectMapper getMapper() {
 		return mapper;
 	}
+
+	public static <T> String toJson(T t) throws JsonProcessingException {
+		return mapper.writeValueAsString(t);
+	}
+
+	public static <T> Try<String> toJsonTry(T t) {
+		var jsonTry = Try.of(() -> toJson(t));
+		return jsonTry;
+	}
+
+	public static <T> Optional<String> toJsonOptional(T t) {
+		try {
+			var json = toJson(t);
+			return Optional.of(json);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return Optional.empty();
+		}
+	}
+
+	public static <T> T toClass(String json, Class<T> clazz) throws IOException {
+		return mapper.readValue(json, clazz);
+	}
+
+	public static <T> Try<T> toClassTry(String json, Class<T> clazz) {
+		var objTry = Try.of(() -> toClass(json, clazz));
+		return objTry;
+	}
+
+	public static <T> Optional<T> toClassOptional(String json, Class<T> clazz) {
+		try {
+			var objectT = toClass(json, clazz);
+			return Optional.of(objectT);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return Optional.empty();
+		}
+	}
+
+	// ---------------------------------------------------------------------------------------------
+	// - private method
+	// ---------------------------------------------------------------------------------------------
+
 }
