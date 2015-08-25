@@ -4,20 +4,20 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
-import com.github.sakaguchi3.jbatch002.api.FileIo;
 import com.github.sakaguchi3.util.JavaMail;
+import com.github.sakaguchi3.util.UtilFile;
 
 public class JavaMailTest {
 
 	@Test
 	public void t01Test() {
 
-		var reader = new FileIo();
+		var reader = new UtilFile();
 		var fileapath = "mail.dat";
 
 		try {
 
-			Optional<String> contentOp = reader.readResources(fileapath);
+			Optional<String> contentOp = reader.readStrFromResource(fileapath);
 			if (contentOp.isEmpty()) {
 				System.out.println("err");
 				return;
