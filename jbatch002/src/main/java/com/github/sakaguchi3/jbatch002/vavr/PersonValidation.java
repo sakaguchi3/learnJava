@@ -1,5 +1,8 @@
 package com.github.sakaguchi3.jbatch002.vavr;
 
+import static io.vavr.control.Validation.invalid;
+import static io.vavr.control.Validation.valid;
+
 import io.vavr.collection.CharSeq;
 import io.vavr.collection.Seq;
 import io.vavr.control.Validation;
@@ -20,7 +23,7 @@ public class PersonValidation {
 		final Validation<String, String> validation = CharSeq.of(name)//
 				.replaceAll(VALID_NAME_CHARS_REGEX, "") //
 				.transform(seq -> seq.isEmpty() ? //
-						Validation.valid(name) : Validation.invalid("Name contains invalid characters: '" + seq.distinct().sorted() + "'"));
+						valid(name) : invalid("Name contains invalid characters: '" + seq.distinct().sorted() + "'"));
 		return validation;
 	}
 
