@@ -9,6 +9,9 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
+import com.google.common.collect.ComparisonChain;
+import com.google.common.collect.Ordering;
+
 public class CompareTest {
 
 	/**
@@ -143,8 +146,101 @@ public class CompareTest {
 
 	}
 
-	private void debug() {
+	@Test
+	void compareATest() {
+		var p11 = new A(1);
+		var p20 = new A(2);
+		var p12 = new A(1);
 
+		var c1 = p11.compareTo(p20);
+		var c2 = p20.compareTo(p12);
+		var c3 = p11.compareTo(p12);
+
+		assertEquals(0, c3);
+		assertEquals(1, c2);
+		assertEquals(-1, c1);
+	}
+
+	@Test
+	void compareBTest() {
+		var a1 = new A(1);
+		var a2 = new A(2);
+		var diffa = a1.compareTo(a2);
+		assertEquals(-1, diffa);
+
+		var b1 = new B(1);
+		var b2 = new B(2);
+		var diffb = b1.compareTo(b2);
+		assertEquals(1, diffb);
+	}
+
+	@Test
+	void compareCTest() {
+		var a1 = new C(1, 1);
+		var a2 = new C(1, 2);
+		var a3 = new C(2, 1);
+
+		var d21 = a2.compareTo(a1);
+		var d23 = a2.compareTo(a3);
+		var d13 = a1.compareTo(a3);
+
+		assertEquals(+1, d21);
+		assertEquals(-1, d23);
+		assertEquals(-1, d13);
+	}
+
+	private void debug() {
+	}
+
+	/** natural order */
+	private static class A implements Comparable<A> {
+		final int i;
+
+		A(int i) {
+			this.i = i;
+		}
+
+		@Override
+		public int compareTo(A that) {
+			return ComparisonChain.start() //
+					.compare(this.i, that.i) //
+					.result();
+		}
+	}
+
+	/** revere order */
+	private static class B implements Comparable<B> {
+		final int i;
+
+		B(int i) {
+			this.i = i;
+		}
+
+		@Override
+		public int compareTo(B that) {
+			return ComparisonChain.start() //
+					.compare(this.i, that.i, Ordering.natural().reverse()) //
+					.result();
+		}
+	}
+
+	/** natural order */
+	private static class C implements Comparable<C> {
+		final int a;
+		final int b;
+
+		C(int a, int b) {
+			this.a = a;
+			this.b = b;
+		}
+
+		@Override
+		public int compareTo(C that) {
+			return ComparisonChain.start() //
+					.compare(this.a, that.a) //
+					.compare(this.b, that.b) //
+					.result();
+		}
 	}
 
 }
