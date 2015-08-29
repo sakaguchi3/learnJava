@@ -1,5 +1,6 @@
 package com.github.sakaguchi3.jbatch002.javaapi;
 
+import static java.util.Comparator.comparing;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -73,9 +74,9 @@ public class CollectionPriorityQueueTest {
 	@Test
 	public void myCompare3Test() {
 		var pq = new PriorityQueue<NoMyComparable>();
-		var pqNoErr = new PriorityQueue<NoMyComparable>(Comparator.comparing((NoMyComparable t) -> t.priority));
+		var pqNoErr = new PriorityQueue<NoMyComparable>(comparing(t -> t.priority));
 		// これは出来ません!!!!!
-//		var pq = new PriorityBlockingQueue<NoMyComparable>(Comparator.comparing((NoMyComparable t) -> t.priority));
+//		var pq = new PriorityBlockingQueue<NoMyComparable>(comparing(t -> t.priority));
 
 		var unsorted = List.of( //
 				NoMyComparable.of(10), //
@@ -99,8 +100,7 @@ public class CollectionPriorityQueueTest {
 	@Test
 	public void myCompare2Test() {
 		var pqNatural = new PriorityBlockingQueue<MyComparable>();
-		var pqReverse = new PriorityQueue<MyComparable>(
-				Comparator.comparing((MyComparable t) -> t.priority).reversed());
+		var pqReverse = new PriorityQueue<>(comparing((MyComparable t) -> t.priority).reversed());
 		var unsorted = List.of( //
 				MyComparable.of(10), //
 				MyComparable.of(20), //

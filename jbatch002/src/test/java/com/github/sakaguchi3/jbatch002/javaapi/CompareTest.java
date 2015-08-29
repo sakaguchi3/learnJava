@@ -178,7 +178,7 @@ public class CompareTest {
 	void compareCTest() {
 		var a1 = new C(1, 1);
 		var a2 = new C(1, 2);
-		var a3 = new C(2, 1);
+		var a3 = new C(2, -1);
 
 		var d21 = a2.compareTo(a1);
 		var d23 = a2.compareTo(a3);
