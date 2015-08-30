@@ -40,7 +40,7 @@ public class CollectionPriorityQueueTest {
 			System.out.print(aa + " ");
 			debug();
 		}
-		
+
 		System.out.println();
 		debug();
 	}
@@ -154,7 +154,7 @@ public class CollectionPriorityQueueTest {
 	@Test
 	public void IntagerTest() {
 		// 内部ではstackとしてデータが保存されている(?)
-		var pq = new PriorityQueue();
+		var pq = new PriorityQueue<Integer>();
 
 		// 挿入
 		pq.add(2);
@@ -183,7 +183,7 @@ public class CollectionPriorityQueueTest {
 	void debug() {
 	}
 
-	static class MyComparable implements Comparable<MyComparable> {
+	private static class MyComparable implements Comparable<MyComparable> {
 		public int priority = 0;
 
 		public static MyComparable of(int priority) {
@@ -203,7 +203,7 @@ public class CollectionPriorityQueueTest {
 		}
 	}
 
-	static class NoMyComparable {
+	private static class NoMyComparable {
 		public int priority = 0;
 
 		public static NoMyComparable of(int priority) {
