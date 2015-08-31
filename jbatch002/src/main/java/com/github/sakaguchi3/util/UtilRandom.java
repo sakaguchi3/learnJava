@@ -45,7 +45,7 @@ public class UtilRandom {
 		final var alphabetFull = alphabetUpperCase + alphabetUpperCase.toLowerCase();
 		final var stringLen = alphabetFull.length();
 
-		var sb = new StringBuilder();
+		var sb = new StringBuilder(len);
 		for (int i = 0; i < len; i++) {
 			var index = RAND.nextInt(stringLen);
 			var c = alphabetFull.charAt(index);
