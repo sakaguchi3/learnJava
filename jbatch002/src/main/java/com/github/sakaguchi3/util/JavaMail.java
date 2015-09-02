@@ -121,11 +121,14 @@ public class JavaMail {
 			String content // 本文
 	) throws UnsupportedEncodingException, MessagingException {
 
-		Session session = Session.getInstance(props, new Authenticator() {
+		var auth = new Authenticator() {
+			@Override
 			protected PasswordAuthentication getPasswordAuthentication() {
 				return new PasswordAuthentication(smtpUsername, smtpPassword);
 			}
-		});
+		};
+
+		Session session = Session.getInstance(props, auth);
 
 		MimeMessage message = new MimeMessage(session);
 

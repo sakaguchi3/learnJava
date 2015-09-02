@@ -127,11 +127,11 @@ public class UtilFile {
 	protected static String _readString(String file) throws FileNotFoundException, IOException {
 		File f = new File(file);
 		try (//
-				var fis = new FileInputStream(f);
-				var inr = new InputStreamReader(fis);
-				var bis = new BufferedReader(inr);
-				var stream = bis.lines();) {
-			return stream.collect(Collectors.joining());
+				var fi = new FileInputStream(f);
+				var ir = new InputStreamReader(fi);
+				var br = new BufferedReader(ir);
+				var stream = br.lines();) {
+			return stream.collect(Collectors.joining("\n"));
 		}
 	}
 
@@ -148,9 +148,7 @@ public class UtilFile {
 
 	protected static void _writeStr(String fileName, String msg, List<? extends OpenOption> ops) throws URISyntaxException, IOException {
 		var pf = Paths.get(fileName);
-		var opAllLst = Stream.concat(ops.stream(), Stream.of(CREATE)).collect(toList());
-		var opAllArry = new OpenOption[opAllLst.size()];
-		opAllLst.toArray(opAllArry);
+		var opAllArry = Stream.concat(ops.stream(), Stream.of(CREATE)).toArray(OpenOption[]::new);
 		try (var bw = Files.newBufferedWriter(pf, opAllArry);) {
 			bw.write(msg);
 		}
