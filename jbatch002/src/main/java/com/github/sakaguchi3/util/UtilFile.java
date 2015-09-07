@@ -3,11 +3,12 @@ package com.github.sakaguchi3.util;
 import static java.nio.file.StandardOpenOption.APPEND;
 import static java.nio.file.StandardOpenOption.CREATE;
 import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toList;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -24,6 +25,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -96,6 +99,71 @@ public class UtilFile {
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
 			return false;
+		}
+	}
+
+	public static boolean writeBytesGzip(String filePath, byte[] uncompressedData) {
+		try {
+			try (//
+					var fo = new FileOutputStream(filePath);
+					var bo = new BufferedOutputStream(fo);
+					var gz = new GZIPOutputStream(bo);) {
+				gz.write(uncompressedData);
+			}
+			return true;
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+			return false;
+		}
+	}
+
+	public static Optional<byte[]> readBytesGzip(String filePath) {
+		try {
+			var pf = Paths.get(filePath);
+			try (//
+					var is = Files.newInputStream(pf);
+					var gz = new GZIPInputStream(is);) {
+				var byteArray = gz.readAllBytes();
+				return Optional.ofNullable(byteArray);
+			}
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+			return Optional.empty();
+		}
+	}
+
+	public static Optional<byte[]> zipCompress(byte[] uncompressedData) {
+		try {
+			try (var baos = new ByteArrayOutputStream(uncompressedData.length)) {
+				try (var gzip = new GZIPOutputStream(baos)) {
+					gzip.write(uncompressedData);
+				}
+				// you need to gzip.close before using baos.toByteArray();
+				var cpmpressByteArray = baos.toByteArray();
+				return Optional.ofNullable(cpmpressByteArray);
+			}
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+			return Optional.empty();
+		}
+	}
+
+	public static Optional<byte[]> zipUncompress(byte[] compressedData) {
+		try {
+			try (//
+					var decompressBaos = new ByteArrayOutputStream(); // output
+					var is = new ByteArrayInputStream(compressedData);
+					var gzip = new GZIPInputStream(is)) {
+				int len;
+				while ((len = gzip.read()) != -1) {
+					decompressBaos.write(len);
+				}
+				byte[] decompressed = decompressBaos.toByteArray();
+				return Optional.ofNullable(decompressed);
+			}
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+			return Optional.empty();
 		}
 	}
 
