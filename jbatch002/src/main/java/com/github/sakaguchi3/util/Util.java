@@ -15,7 +15,7 @@ public class Util {
 
 	public static String toString(Object obj) {
 		return Try.of(() -> reflectionToString(obj, SHORT_PREFIX_STYLE)) //
-				.getOrElse("");
+				.getOrElse("toString err.");
 	}
 
 	public static boolean isIpv4(String ip) {
