@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -47,8 +48,13 @@ public class UtilFile {
 	 */
 	public static Optional<byte[]> readBytes(String fileFullPath) {
 		try {
-			var bytes = _readByte(fileFullPath);
-			return Optional.ofNullable(bytes);
+			File f = new File(fileFullPath);
+			try (//
+					var fis = new FileInputStream(f);
+					var bis = new BufferedInputStream(fis);) {
+				var bytes = bis.readAllBytes();
+				return Optional.ofNullable(bytes);
+			}
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
 			return Optional.empty();
@@ -57,8 +63,15 @@ public class UtilFile {
 
 	public static Optional<String> readString(String fileFullPath) {
 		try {
-			var ret = _readString(fileFullPath);
-			return Optional.of(ret);
+			File file = new File(fileFullPath);
+			try (//
+					var fi = new FileInputStream(file);
+					var ir = new InputStreamReader(fi);
+					var br = new BufferedReader(ir);
+					var stream = br.lines();) {
+				var retStr = stream.collect(Collectors.joining("\n"));
+				return Optional.ofNullable(retStr);
+			}
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
 			return Optional.empty();
@@ -70,11 +83,16 @@ public class UtilFile {
 	 * @param filename
 	 * @return
 	 */
-	public static Optional<String> readStrFromResource(String filename) {
+	public static Optional<String> readStrFromResource(String filePath) {
 		try {
-			var jsonStr = _readStrFromResource(filename);
-			var jsonOp = Optional.of(jsonStr);
-			return jsonOp;
+			URL fileUrl = ClassLoader.getSystemResource(filePath);
+			Path localeFilePath = Paths.get(fileUrl.toURI());
+			try (var stream = Files.lines(localeFilePath)) {
+				// save line code
+				var jsonStr = stream.collect(Collectors.joining("\n"));
+				var jsonOp = Optional.of(jsonStr);
+				return jsonOp;
+			}
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
 			return Optional.empty();
@@ -83,8 +101,13 @@ public class UtilFile {
 
 	public static boolean writeStr(String fileName, String msg, boolean append) {
 		try {
-			List<OpenOption> ops = append ? List.of(APPEND) : emptyList();
-			_writeStr(fileName, msg, ops);
+			var optionLst = append ? Arrays.asList(APPEND, CREATE) : Arrays.asList(CREATE);
+			var optionArray = optionLst.toArray(OpenOption[]::new);
+
+			var pf = Paths.get(fileName);
+			try (var bw = Files.newBufferedWriter(pf, optionArray);) {
+				bw.write(msg);
+			}
 			return true;
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
@@ -92,9 +115,14 @@ public class UtilFile {
 		}
 	}
 
-	public static boolean writeBytes(String filePath, byte[] b, boolean append) {
+	public static boolean writeBytes(String filePath, byte[] byteData, boolean append) {
 		try {
-			_writeBytes(filePath, b, append);
+			try (//
+					var fo = new FileOutputStream(filePath, append);
+					var bo = new BufferedOutputStream(fo);) {
+				bo.write(byteData);
+				bo.flush();
+			}
 			return true;
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
@@ -102,7 +130,7 @@ public class UtilFile {
 		}
 	}
 
-	public static boolean writeBytesGzip(String filePath, byte[] uncompressedData) {
+	public static boolean writeGzipToFile(String filePath, byte[] uncompressedData) {
 		try {
 			try (//
 					var fo = new FileOutputStream(filePath);
@@ -117,7 +145,7 @@ public class UtilFile {
 		}
 	}
 
-	public static Optional<byte[]> readBytesGzip(String filePath) {
+	public static Optional<byte[]> readGzipFromFile(String filePath) {
 		try {
 			var pf = Paths.get(filePath);
 			try (//
@@ -132,7 +160,7 @@ public class UtilFile {
 		}
 	}
 
-	public static Optional<byte[]> zipCompress(byte[] uncompressedData) {
+	public static Optional<byte[]> gzipByteArray(byte[] uncompressedData) {
 		try {
 			try (var baos = new ByteArrayOutputStream(uncompressedData.length)) {
 				try (var gzip = new GZIPOutputStream(baos)) {
@@ -148,7 +176,7 @@ public class UtilFile {
 		}
 	}
 
-	public static Optional<byte[]> zipUncompress(byte[] compressedData) {
+	public static Optional<byte[]> ungzipByteArray(byte[] compressedData) {
 		try {
 			try (//
 					var decompressBaos = new ByteArrayOutputStream(); // output
@@ -170,66 +198,6 @@ public class UtilFile {
 	// ------------------------------------------------------
 	// private
 	// ------------------------------------------------------
-
-	protected static byte[] _readByte(String file) throws FileNotFoundException, IOException {
-		File f = new File(file);
-		try (//
-				var fis = new FileInputStream(f);
-				var bis = new BufferedInputStream(fis);) {
-			var bytes = bis.readAllBytes();
-			return bytes;
-		}
-	}
-
-	protected static byte[] _fileAsBytes2(String file) throws FileNotFoundException, IOException {
-		File f = new File(file);
-		try (//
-				var fis = new FileInputStream(f);
-				var bis = new BufferedInputStream(fis);) {
-			var bytes = bis.readAllBytes();
-			bis.read(bytes);
-			return bytes;
-		}
-	}
-
-	protected static String _readString(String file) throws FileNotFoundException, IOException {
-		File f = new File(file);
-		try (//
-				var fi = new FileInputStream(f);
-				var ir = new InputStreamReader(fi);
-				var br = new BufferedReader(ir);
-				var stream = br.lines();) {
-			return stream.collect(Collectors.joining("\n"));
-		}
-	}
-
-	protected static String _readStrFromResource(String filePath) throws URISyntaxException, IOException {
-		URL fileUrl = ClassLoader.getSystemResource(filePath);
-		Path localeFilePath = Paths.get(fileUrl.toURI());
-
-		try (var stream = Files.lines(localeFilePath)) {
-			// save line code
-			var str = stream.collect(Collectors.joining("\n"));
-			return str;
-		}
-	}
-
-	protected static void _writeStr(String fileName, String msg, List<? extends OpenOption> ops) throws URISyntaxException, IOException {
-		var pf = Paths.get(fileName);
-		var opAllArry = Stream.concat(ops.stream(), Stream.of(CREATE)).toArray(OpenOption[]::new);
-		try (var bw = Files.newBufferedWriter(pf, opAllArry);) {
-			bw.write(msg);
-		}
-	}
-
-	protected static void _writeBytes(String filePath, byte[] b, boolean append) throws FileNotFoundException, IOException {
-		try (//
-				var fo = new FileOutputStream(filePath, append);
-				var bo = new BufferedOutputStream(fo);) {
-			bo.write(b);
-			bo.flush();
-		}
-	}
 
 	static void debug() {
 	}

@@ -20,10 +20,10 @@ public class UtilZipTest {
 
 		var str1 = "plain text";
 		var byte1 = str1.getBytes();
-		var booleanWrite = UtilFile.writeBytesGzip(filePath, byte1);
+		var booleanWrite = UtilFile.writeGzipToFile(filePath, byte1);
 		assertTrue(booleanWrite);
 
-		var readByteOp = UtilFile.readBytesGzip(filePath);
+		var readByteOp = UtilFile.readGzipFromFile(filePath);
 		assertTrue(readByteOp.isPresent());
 
 		// byte -> str
@@ -37,8 +37,8 @@ public class UtilZipTest {
 		// str -> byte
 		var byte1 = str1.getBytes();
 
-		var compressOp = UtilFile.zipCompress(byte1);
-		var decompressOp = compressOp.flatMap(v -> UtilFile.zipUncompress(v));
+		var compressOp = UtilFile.gzipByteArray(byte1);
+		var decompressOp = compressOp.flatMap(v -> UtilFile.ungzipByteArray(v));
 
 		// byte -> str
 		var str2 = decompressOp.map(b -> new String(b)).orElse("err");
