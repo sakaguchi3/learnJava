@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 
-import com.github.sakaguchi3.util.MongoQueryCreator;
+import testcase.other.MongoQueryCreator;
 
 
 public class TestMongoQueryCreator {

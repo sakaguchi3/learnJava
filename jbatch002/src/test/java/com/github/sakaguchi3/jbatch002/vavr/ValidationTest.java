@@ -16,6 +16,8 @@ import io.vavr.Tuple3;
 import io.vavr.collection.Seq;
 import io.vavr.collection.Vector;
 import io.vavr.control.Validation;
+import testcase.other.Person;
+import testcase.other.PersonValidation;
 import testcase.valid.ValidationFuga;
 
 public class ValidationTest {

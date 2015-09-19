@@ -1,4 +1,4 @@
-package com.github.sakaguchi3.jbatch002.api;
+package testcase.other;
 
 /**
  *

@@ -1,4 +1,4 @@
-package com.github.sakaguchi3.jbatch002.s;
+package testcase.other;
 
 import java.util.HashMap;
 import java.util.Map;

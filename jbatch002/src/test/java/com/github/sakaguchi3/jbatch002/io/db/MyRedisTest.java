@@ -4,10 +4,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
-import com.github.sakaguchi3.jbatch002.io.resource.RedisX;
-
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisCluster;
+import testcase.other.RedisX;
 
 /** 
  */

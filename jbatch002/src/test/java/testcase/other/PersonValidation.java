@@ -1,4 +1,4 @@
-package com.github.sakaguchi3.jbatch002.vavr;
+package testcase.other;
 
 import static io.vavr.control.Validation.invalid;
 import static io.vavr.control.Validation.valid;
