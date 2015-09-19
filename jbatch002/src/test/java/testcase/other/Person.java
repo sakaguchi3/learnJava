@@ -1,4 +1,4 @@
-package com.github.sakaguchi3.jbatch002.vavr;
+package testcase.other;
 
 import static java.util.Objects.hash;
 

@@ -1,4 +1,4 @@
-package com.github.sakaguchi3.util;
+package testcase.other;
 
 import java.io.BufferedWriter;
 import java.io.File;

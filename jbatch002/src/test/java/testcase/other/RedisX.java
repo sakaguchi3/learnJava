@@ -1,9 +1,7 @@
-package com.github.sakaguchi3.jbatch002.io.resource;
+package testcase.other;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
-
-import com.github.sakaguchi3.jbatch002.api.Constants;
 
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;

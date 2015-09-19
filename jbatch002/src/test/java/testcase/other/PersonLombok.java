@@ -1,4 +1,4 @@
-package com.github.sakaguchi3.jbatch002.s;
+package testcase.other;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import lombok.Data;
  * 
  */
 @Data
-public class Person {
+public class PersonLombok {
 
 	private int age;
 
