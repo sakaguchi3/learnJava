@@ -26,11 +26,61 @@ import io.vavr.collection.Iterator;
 import io.vavr.collection.List;
 import io.vavr.collection.Seq;
 import io.vavr.collection.Stream;
+import io.vavr.collection.Vector;
 import io.vavr.control.Option;
 import io.vavr.control.Validation;
 import testcase.valid.ValidationFuga;
 
 public class ForTest {
+
+	@Test
+	void opSomeSeqSome() {
+		var op1 = Option.of("op");
+		var seq1 = Vector.of(1, 2);
+
+		var ret1 = For(op1, seq1) //
+				.yield((s, i) -> s.length() + i) //
+				.toVector();
+
+		var ret2 = For(seq1, op1) //
+				.yield((i, s) -> s.length() + i) //
+				.toVector();
+		assertEquals(2, ret1.size());
+		assertEquals(2, ret2.size());
+	}
+
+	@Test
+	void opEmptySeqSome() {
+		Option<String> op1 = Option.none();
+		var seq1 = Vector.of(1, 2);
+
+		var ret1 = For(op1, seq1) //
+				.yield((s, i) -> s.length() + i) //
+				.toVector();
+
+		var ret2 = For(seq1, op1) //
+				.yield((i, s) -> s.length() + i) //
+				.toVector();
+		assertEquals(0, ret1.size());
+		assertEquals(0, ret2.size());
+	}
+
+	@Test
+	void opSomeSeqEmpty() {
+		var op1 = Option.of("op");
+		Vector<Integer> seq1 = Vector.empty();
+
+		var ret1 = For(op1, seq1) //
+				.yield((s, i) -> s.length() + i) //
+				.toVector();
+
+		var ret2 = For(seq1, op1) //
+				.yield((i, s) -> s.length() + i) //
+				.toVector();
+
+		assertEquals(0, ret1.size());
+		assertEquals(0, ret2.size());
+	}
 
 	@Test
 	void optionTest() {
