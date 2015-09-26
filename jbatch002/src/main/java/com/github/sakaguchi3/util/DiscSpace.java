@@ -1,3 +1,18 @@
+/**
+ * Copyright 2020 sakaguchi<uqw@outlook.jp>, https://github.com/sakaguchi3/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.github.sakaguchi3.util;
 
 import java.io.File;
@@ -58,19 +73,20 @@ public class DiscSpace {
 
 		sb.append(" === Partition Detail ===\n");
 		sb.append(" === bytes ===\n");
-		sb.append("Total size : " + totalSpace + " bytes\n");
-		sb.append("Space free : " + usableSpace + " bytes\n");
-		sb.append("Space free : " + freeSpace + " bytes\n");
+		sb.append("Total size : ").append(totalSpace).append(" bytes\n");
+		sb.append("Space free : ").append(usableSpace).append(" bytes\n");
+		sb.append("Space free : ").append(freeSpace).append(" bytes\n");
 
 		sb.append(" === mega bytes ===\n");
-		sb.append("Total size : " + totalSpace / MB + " mb\n");
-		sb.append("Space free : " + usableSpace / MB + " mb\n");
-		sb.append("Space free : " + freeSpace / MB + " mb\n");
+		sb.append("Total size : ").append(totalSpace / MB).append(" mb\n");
+		sb.append("Space free : ").append(usableSpace / MB).append(" mb\n");
+		sb.append("Space free : ").append(freeSpace / MB).append(" mb\n");
+		sb.append("Space free : ").append(freeSpace / MB).append(" mb\n");
 
 		sb.append(" === giga bytes ===\n");
-		sb.append("Total size : " + totalSpace / GB + " gb\n");
-		sb.append("Space free : " + usableSpace / GB + " gb\n");
-		sb.append("Space free : " + freeSpace / GB + " gb\n");
+		sb.append("Total size : ").append(totalSpace / GB).append(" gb\n");
+		sb.append("Space free : ").append(usableSpace / GB).append(" gb\n");
+		sb.append("Space free : ").append(freeSpace / GB).append(" gb\n");
 
 		double freeSizeRate = 100.0d * usableSpace / totalSpace;
 
@@ -86,7 +102,7 @@ public class DiscSpace {
 		var bd = bdTry.get();
 
 		sb.append(" === percent ===\n");
-		sb.append("Disk available(%) : " + bd + "\n");
+		sb.append("Disk available(%) : ").append(bd).append("\n");
 
 		sb.append(" === note ===\n");
 
