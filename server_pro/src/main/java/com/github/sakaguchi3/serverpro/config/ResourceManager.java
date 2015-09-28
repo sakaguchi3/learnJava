@@ -25,6 +25,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.tools.picocli.CommandLine.InitializationException;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
  * Config Class This Singleton Class is responsible for loading all of the
  * general configuration options for this app.
@@ -48,6 +51,9 @@ public class ResourceManager {
 	protected static final Logger LOG = LogManager.getLogger();
 
 	private final ExecutorService threadPool;
+
+	protected final ObjectMapper MAPPER = (new ObjectMapper()) //
+			.setSerializationInclusion(JsonInclude.Include.NON_EMPTY); // remove null
 
 	// ---------------------------------------------------------
 	// constructor
@@ -92,6 +98,10 @@ public class ResourceManager {
 
 	public ExecutorService getThreadPool() {
 		return threadPool;
+	}
+	
+	public ObjectMapper getObjectMapper() {
+		return MAPPER;
 	}
 
 	// ---------------------------------------------------------
