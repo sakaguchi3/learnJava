@@ -16,7 +16,7 @@
 	<!-- -->
 	<servlet>
 		<servlet-name>singlethread</servlet-name>
-		<servlet-class>com.github.sakaguchi3.serverpro.server.SingleThreadServer</servlet-class>
+		<servlet-class>com.github.sakaguchi3.serverpro.server.SingleThreadServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>singlethread</servlet-name>
@@ -26,14 +26,55 @@
 
 	<!-- -->
 	<servlet>
-		<servlet-name>restUser</servlet-name>
-		<servlet-class>com.github.sakaguchi3.serverpro.server.RestUserServlet</servlet-class>
+		<servlet-name>restResource</servlet-name>
+		<servlet-class>com.github.sakaguchi3.serverpro.server.ResourceServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>restUser</servlet-name>
-		<url-pattern>/api/user</url-pattern>
+		<servlet-name>restResource</servlet-name>
+		<url-pattern>/api/resource</url-pattern>
 	</servlet-mapping>
 
 	<!-- -->
+	<servlet>
+		<servlet-name>token</servlet-name>
+		<servlet-class>com.github.sakaguchi3.serverpro.server.TokenServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>token</servlet-name>
+		<url-pattern>/token</url-pattern>
+	</servlet-mapping>
+
+
+	<!-- -->
+	<!-- -->
+	<servlet>
+		<servlet-name>defaultServer</servlet-name>
+		<servlet-class>com.github.sakaguchi3.serverpro.server.DefaultServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>defaultServer</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+
+	<!-- basic auth -->
+<!--  
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>User Basic Auth</web-resource-name>
+			<url-pattern>/token</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>role1</role-name>
+		</auth-constraint>
+	</security-constraint> 
+	<login-config>
+		<auth-method>BASIC</auth-method>
+		<realm-name>User Basic Auth</realm-name>
+	</login-config> 
+	<security-role>
+		<role-name>role1</role-name>
+	</security-role>
+-->
 
 </web-app>

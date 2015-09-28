@@ -38,7 +38,7 @@ import com.github.sakaguchi3.serverpro.db.DummyTableDto;
 /**
  * 
  */
-public class SingleThreadServer extends HttpServlet {
+public class SingleThreadServlet extends HttpServlet {
 
 	// ---------------------------------------------------------
 	// field
