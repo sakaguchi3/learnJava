@@ -1,3 +1,18 @@
+/**
+ * Copyright 2020 sakaguchi<uqw@outlook.jp>, https://github.com/sakaguchi3/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.github.sakaguchi3.jbatch002.io.resource;
 
 import static java.util.Objects.isNull;
@@ -10,18 +25,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.github.sakaguchi3.jbatch002.io.resource.dto.KeyDto;
 
-public class RepositoryImplLocalKey implements RepositoryKey {
+public class RepositoryKeyImplMemoryDB implements RepositoryKey {
 
 	// ------------------------------------------------------
 	// field
 	// ------------------------------------------------------
-
-	private static final Logger LOG = LogManager.getLogger();
 
 	protected final List<KeyDto> list;
 
@@ -29,7 +39,7 @@ public class RepositoryImplLocalKey implements RepositoryKey {
 	// constructor
 	// ------------------------------------------------------
 
-	public RepositoryImplLocalKey(List<KeyDto> list) {
+	public RepositoryKeyImplMemoryDB(List<KeyDto> list) {
 		this.list = ofNullable(list).orElseGet(() -> new ArrayList<>());
 	}
 
