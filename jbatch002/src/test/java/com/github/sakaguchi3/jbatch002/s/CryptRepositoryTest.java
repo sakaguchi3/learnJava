@@ -1,3 +1,18 @@
+/**
+ * Copyright 2020 sakaguchi<uqw@outlook.jp>, https://github.com/sakaguchi3/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.github.sakaguchi3.jbatch002.s;
 
 import static com.github.sakaguchi3.jbatch002.api.CipherY.generateIVStr;
@@ -18,8 +33,8 @@ import org.junit.jupiter.api.Test;
 
 import com.github.sakaguchi3.jbatch002.api.CipherY;
 import com.github.sakaguchi3.jbatch002.api.CipherY.KeyLen;
-import com.github.sakaguchi3.jbatch002.io.resource.RepositoryImplLocalCrypt;
-import com.github.sakaguchi3.jbatch002.io.resource.RepositoryImplLocalKey;
+import com.github.sakaguchi3.jbatch002.io.resource.RepositoryCryptImplMemoryDB;
+import com.github.sakaguchi3.jbatch002.io.resource.RepositoryKeyImplMemoryDB;
 import com.github.sakaguchi3.jbatch002.io.resource.dao.CryptDao;
 import com.github.sakaguchi3.jbatch002.io.resource.dao.KeyDao;
 import com.github.sakaguchi3.jbatch002.io.resource.dto.CryptDto;
@@ -35,7 +50,7 @@ public class CryptRepositoryTest {
 		var keyData = LongStream.range(0, dataSize) //
 				.mapToObj(num -> KeyDto.of(num, "corpNo" + num, generateKeyStr(KeyLen.Len256), generateIVStr())) //
 				.collect(collectingAndThen(toList(), Collections::unmodifiableList));
-		var keyRepo = new RepositoryImplLocalKey(keyData);
+		var keyRepo = new RepositoryKeyImplMemoryDB(keyData);
 
 		this.keyDao = new KeyDao(keyRepo);
 	}
@@ -47,7 +62,7 @@ public class CryptRepositoryTest {
 			var key = keyDao.selectWhereId(keyId).get();
 			var cipher = new CipherY(key.secretKey.getBytes(), key.iv.getBytes());
 
-			var cryptRepo = new RepositoryImplLocalCrypt(new ArrayList<>());
+			var cryptRepo = new RepositoryCryptImplMemoryDB(new ArrayList<>());
 			var cryptDao = new CryptDao(cryptRepo);
 			IntStream.range(0, 4) //
 					.mapToObj(num -> "test_" + num) //
