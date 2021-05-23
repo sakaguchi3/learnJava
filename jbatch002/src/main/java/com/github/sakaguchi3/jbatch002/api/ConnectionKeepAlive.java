@@ -23,16 +23,8 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.config.SocketConfig;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 
 /**
  * https://kazuhira-r.hatenablog.com/entry/20171125/1511601958
@@ -186,37 +178,6 @@ public class ConnectionKeepAlive {
 		}
 
 		System.out.println("<<< end");
-	}
-
-	public void connection() {
-		try {
-			URL a = new URL("http://localhost:8080/server002/s003");
-			URLConnection urlc = a.openConnection();
-			keepAlive(urlc);
-
-			SocketConfig socketConfig = SocketConfig.custom() //
-					.setSoKeepAlive(true) //
-					.setSoTimeout(3600000) //
-					.build(); // We need to set socket keep alive
-			RequestConfig requestConfig = RequestConfig.custom() //
-					.setConnectTimeout(3600000) //
-					.build();
-			CloseableHttpClient httpClient = HttpClientBuilder.create() //
-					.setDefaultRequestConfig(requestConfig) //
-					.setDefaultSocketConfig(socketConfig) //
-					.build();
-			HttpPost post = new HttpPost(a.toString());
-			CloseableHttpResponse response = httpClient.execute(post);
-			HttpEntity entity = response.getEntity();
-
-//			HttpParams params = httpClient.getParams();
-//			HttpConnectionParams.setSoKeepalive(params, true);
-
-//			 var client = HttpClient.newHttpClient();
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-
 	}
 
 	void keepAlive(URLConnection urlc) {
