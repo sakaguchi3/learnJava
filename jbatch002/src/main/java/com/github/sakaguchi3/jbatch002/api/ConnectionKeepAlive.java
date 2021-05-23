@@ -30,8 +30,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.config.SocketConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 /**
  * https://kazuhira-r.hatenablog.com/entry/20171125/1511601958
@@ -42,7 +43,7 @@ public class ConnectionKeepAlive {
 	// field
 	// ---------------------------------------------------------
 
-	static final Logger LOGGER = LoggerFactory.getLogger(ConnectionKeepAlive.class);
+	static final Logger LOGGER = LogManager.getLogger();
 
 	protected long interval = 4;
 

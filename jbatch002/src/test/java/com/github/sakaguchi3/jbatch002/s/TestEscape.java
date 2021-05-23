@@ -2,16 +2,12 @@ package com.github.sakaguchi3.jbatch002.s;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class TestEscape {
 
 	// ------------------------------------------------------
 	// field
 	// ------------------------------------------------------
-
-	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
 	// ------------------------------------------------------
 	// public

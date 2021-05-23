@@ -16,8 +16,10 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
 
 public class JavaMail {
 
@@ -25,7 +27,7 @@ public class JavaMail {
 	// field
 	// ------------------------------------------------------
 
-	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+	private final Logger LOGGER = LogManager.getLogger();
 
 	private static final String CONFIG_FILENAME = "mail.properties";
 
